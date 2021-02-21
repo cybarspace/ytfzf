@@ -1,4 +1,7 @@
-# ytfzf
+# THIS IS A PERSONAL FORK AND SUBJECT TO RANDOM CHANGES THAT MAY NOT WORK. USE AT YOUR OWN RISK.
+### I strongly recommend you to use the original script from [pystardust's repo](https://github.com/pystardust/ytfzf).
+
+## ytplay
 
 A POSIX script that helps you find YouTube videos without needing API keys, and opens/downloads using mpv/youtube-dl.
 - History support
