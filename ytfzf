@@ -1,16 +1,12 @@
 #!/bin/sh
 
-# https://github.com/pystardust/ytfzf
-
 # DEFAULTS
 title_len=55                           # Display length for title and channel name
 channel_len=28
 prompt_loop=0                          # to prompt again after video finishes
-save_history=1                         # 0: history off, 1: history on
+save_history=0                         # 0: history off, 1: history on
 cache_dir=~/.cache/ytfzf
 history_file="$cache_dir"/ytfzf_hst
-save_cur=1                             # For status bar modules
-current_file="$cache_dir"/ytfzf_cur
 preferred_format=""                    # ytdl-format (deafults to auto if format not found)"
 show_format="0"                        # 1: shows all formats before proceeding
 player="mpv"
@@ -80,10 +76,6 @@ format_awk () {
 }
 menu_fzf () {
 	format_awk | fzf --tabstop=1 --delimiter="$(printf "\t")" --nth=1,2
-}
-save_before_exit () {
-	[ $save_history -eq 1 ] && printf "%s\n" "$selected_data" >> "$history_file" ;
-	[ $save_cur -eq 1 ] && printf "" > "$current_file" ;
 }
 
 # Opt variables
@@ -189,24 +181,21 @@ user_selection () {
 }
 play_url () {
 
-	[ $save_cur -eq 1 ] && printf "$selected_data" > "$current_file" ;
-
 	[ -n "$preferred_format" ] && {
 		eval "$player_format""$preferred_format"  "$url" 
 	} || { 
 		eval "$player" "$url"
 	} || { 
-		printf "ERROR[#03]: Couldn't play the video/audio using the current player.\n\tTry updating youtube-dl\n"; errinfo ; save_before_exit ; exit 2; 
+		printf "ERROR[#03]: Couldn't play the video/audio using the current player.\n\tTry updating youtube-dl\n"; errinfo ; ; exit 2; 
 	}
 }
 
-while true; do
-	user_selection
-	play_url
-	save_before_exit 
-	[ $prompt_loop -eq 0 ] && exit;
-done
+main() {
+	while true; do
+		user_selection
+		play_url
+		[ $prompt_loop -eq 0 ] && exit;
+	done
+}
 
-
-
-
+main
