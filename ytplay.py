@@ -39,10 +39,10 @@ def error(err_code=0, msg="", **kwargs):
         # set the error message to usage info
         msg = str(
             "Usage: ytplay [OPTIONS] <search query>\n"
-            + "         OPTIONS:\n"
-            + "         -h                    Show this help text\n"
-            + "         -d  <search query>    Download video\n"
-            + "         -v  <search query>    Play video (audio-only if not specified)"
+            + "           OPTIONS:\n"
+            + "               -h                    Show this help text\n"
+            + "               -d  <search query>    Download video\n"
+            + "               -v  <search query>    Play video (audio-only if not specified)"
         )
     # print the given or default error message
     print(msg)
