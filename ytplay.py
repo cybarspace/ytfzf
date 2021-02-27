@@ -12,11 +12,11 @@ import os
 import re
 
 
-def error_msg(err_code=0):
+def error(err_code=0, msg="ytplay [-v] <search-query>"):
     """
     Show an error message and exit with requested error code
     """
-    print("ytplay [-v] <search-query>")
+    print(msg)
     sys.exit(err_code)
 
 
@@ -34,6 +34,10 @@ def get_media_url(search_str="rickroll", result=0):
     )
     # find the list of video IDs from result page
     search_results = re.findall(r'"videoId":"(.{11})"', html_content)
+    # if no results are found...
+    if len(search_results) == 0:
+        # print error message and exit
+        error(msg="No results found.")
     # select the first (or given) result and deduce its URL
     media_url = "https://www.youtube.com/watch?v=" + search_results[result]
     # return the URL of requested media
@@ -58,7 +62,7 @@ def main():
         # decide whether to play video or audio only for the session
         try:
             if "-h" in opts[0]:
-                error_msg()  # show help and exit normally
+                error()  # show help and exit normally
             elif "-v" in opts[0]:
                 # prepare to play video with default quality
                 req_search = opts[0][1] + " ".join(extras).rstrip()
@@ -67,7 +71,7 @@ def main():
         except IndexError:
             # and no arguments are given...
             if len(extras) == 0:
-                error_msg(2)  # show help and exit with error code 2
+                error(2)  # show help and exit with error code 2
             # but if arguments are given,
             # prepare to play audio with best quality
             flags = "--ytdl-format=bestaudio --no-video"
