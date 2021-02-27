@@ -29,10 +29,12 @@ def error(err_code=0, msg="", **kwargs):
     # if no error message given...
     if len(msg) == 0:
         # set the error message to usage info
-        msg = str("Usage: ytplay [OPTIONS] <search query>\n" +
-	          "         OPTIONS:\n" +
-              "         -h                    Show this help text\n" +
-              "         -v  <search query>    Play video (audio-only if not specified)")
+        msg = str(
+            "Usage: ytplay [OPTIONS] <search query>\n"
+            + "         OPTIONS:\n"
+            + "         -h                    Show this help text\n"
+            + "         -v  <search query>    Play video (audio-only if not specified)"
+        )
     # print the given or default error message
     print(msg)
     # if any extra messages are given...
@@ -49,8 +51,12 @@ def check_deps(deps_list):
 
     @param deps_list: list of dependencies to check
     """
+    # check each item in given dependency list
+    # and see if it is installed on the system
     for deps in deps_list:
+        # if it is not installed
         if not installed(deps):
+            # show an error message and exit with code 1
             error(1, msg=f"Dependency {deps} not found.\nPlease install it.")
 
 
