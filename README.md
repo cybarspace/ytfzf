@@ -14,7 +14,7 @@ Usage: ytplay [OPTIONS] <search query>
 ```
 
 #### Examples
-- Stream audio (music)
+- Stream audio
 
 	`ytplay <search-query>`
 
