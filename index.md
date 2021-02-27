@@ -1,37 +1,34 @@
-## Welcome to GitHub Pages
+# cutefetch
+Cute little sysinfo fetch script for use in screenshots.
 
-You can use the [editor on GitHub](https://github.com/cybarspace/ytplay/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+A "fork" of [elenapan](https://github.com/elenapan)'s [bunnyfetch](https://github.com/elenapan/dotfiles/blob/master/bin/bunnyfetch) script.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+PS: I don't know how to fork single scripts from larger repos.
 
-### Markdown
+### Dependencies
+- A terminal emulator with good font support, especially multiple fallback fonts. I use kitty.
+- Typicons ([typicons-git](http://aur.archlinux.org/packages/ttf-typicons) in AUR, [website](https://www.s-ings.com/typicons/))
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Install
+- Click the "Download script" button and save it somewhere on your `$PATH` (I use `$HOME/.local/bin/`).
+- Make it executable by running `chmod a+x ./cutefetch` in the directory it is located.
 
-```markdown
-Syntax highlighted code block
+### Usage
+After installing, run `cutefetch` in the terminal.
 
-# Header 1
-## Header 2
-### Header 3
+Command line arguments can be passed to specify the animal and eye style.
+- Valid animal arguments: kitty, k, bunny, b
+- Valid eye styles: integers from 0 to 13
 
-- Bulleted
-- List
+Examples: `cutefetch kitty 6`, `cutefetch k 6`, `cutefetch` prints the default kitty.
+`cutefetch bunny 0`, `cutefetch b 0`, `cutefetch b`, etc. prints a bunny.
 
-1. Numbered
-2. List
+PS: You can pass an eye style without an animal argument to print a kitty with that eye style.
 
-**Bold** and _Italic_ and `Code` text
+### Screenshots
 
-[Link](url) and ![Image](src)
-```
+![desktop](https://imgur.com/tX8Fqt4.png)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cybarspace/ytplay/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Links:
+- [original script](https://github.com/elenapan/dotfiles/blob/master/bin/bunnyfetch)
+- [author's repo](https://github.com/elenapan/dotfiles/)
