@@ -22,7 +22,7 @@ PLAYER = "mpv"  # the media player to use
 DOWNLOADER = "youtube-dl"  # program to process the youtube videos
 DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
 RESULT_NUM = 1  # the nth result to play or download
-# PS: Make sure to change the DLOAD_DIR to something else...
+# PS: Make sure to change the DLOAD_DIR to what you prefer...
 # especially if you're using this script from Windows
 
 
