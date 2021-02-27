@@ -1,7 +1,5 @@
 # ytplay
 
-![figlet](https://user-images.githubusercontent.com/50134239/109390169-2c1b9000-793a-11eb-94d4-d6b3edc631b7.png)
-
 ### A Python3 script that helps you find YouTube videos without needing API keys, and opens or downloads it using mpv/youtube-dl.
 
 PS: It works just like music bots on Discord - plays or downloads the first search result.
