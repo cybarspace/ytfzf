@@ -14,15 +14,15 @@ Usage: ytplay [OPTIONS] <search query>
 ```
 
 #### Examples
-> Stream audio (music)
+- Stream audio (music)
 
 	ytplay <search-query>
 
-> Watch a video
+- Watch a video
 
 	ytplay -v <search-query>
 
-> Download a video
+- Download a video
 
 	ytplay -d <search-query>
 
