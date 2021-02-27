@@ -18,7 +18,7 @@ import os  # to execute media player
 import re  # to find media URL from search results
 
 
-def error(err_code=0, msg="ytplay [-v] <search-query>", **kwargs):
+def error(err_code=0, msg="", **kwargs):
     """
     Show an error message and exit with requested error code
 
@@ -26,7 +26,14 @@ def error(err_code=0, msg="ytplay [-v] <search-query>", **kwargs):
     @param msg: the error message
     @param **kwargs: extra messages
     """
-    # print the default or given message
+    # if no error message given...
+    if len(msg) == 0:
+        # set the error message to usage info
+        msg = str("Usage: ytplay [OPTIONS] <search query>\n" +
+	          "         OPTIONS:\n" +
+              "         -h                    Show this help text\n" +
+              "         -v  <search query>    Play video (audio-only if not specified)")
+    # print the given or default error message
     print(msg)
     # if any extra messages are given...
     for err, err_msg in kwargs.items():
