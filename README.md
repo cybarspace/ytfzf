@@ -15,12 +15,15 @@ Usage: ytplay [OPTIONS] <search query>
 
 #### Examples
 - Stream audio (music)
+
 	`ytplay <search-query>`
 
 - Watch a video
+
 	`ytplay -v <search-query>`
 
 - Download a video
+
 	`ytplay -d <search-query>`
 
 ### Dependencies
