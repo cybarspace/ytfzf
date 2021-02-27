@@ -15,16 +15,13 @@ Usage: ytplay [OPTIONS] <search query>
 
 #### Examples
 - Stream audio (music)
-
-	ytplay <search-query>
+	`ytplay <search-query>`
 
 - Watch a video
-
-	ytplay -v <search-query>
+	`ytplay -v <search-query>`
 
 - Download a video
-
-	ytplay -d <search-query>
+	`ytplay -d <search-query>`
 
 ### Dependencies
 - [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
