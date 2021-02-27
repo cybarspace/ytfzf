@@ -1,34 +1,38 @@
-# cutefetch
-Cute little sysinfo fetch script for use in screenshots.
+# ytplay
 
-A "fork" of [elenapan](https://github.com/elenapan)'s [bunnyfetch](https://github.com/elenapan/dotfiles/blob/master/bin/bunnyfetch) script.
+### A Python3 script that helps you find YouTube videos without needing API keys, and opens or downloads it using mpv/youtube-dl.
 
-PS: I don't know how to fork single scripts from larger repos.
-
-### Dependencies
-- A terminal emulator with good font support, especially multiple fallback fonts. I use kitty.
-- Typicons ([typicons-git](http://aur.archlinux.org/packages/ttf-typicons) in AUR, [website](https://www.s-ings.com/typicons/))
-
-### Install
-- Click the "Download script" button and save it somewhere on your `$PATH` (I use `$HOME/.local/bin/`).
-- Make it executable by running `chmod a+x ./cutefetch` in the directory it is located.
+PS: It works just like music bots on Discord - plays or downloads the first search result.
 
 ### Usage
-After installing, run `cutefetch` in the terminal.
+```
+Usage: ytplay [OPTIONS] <search query>
+           OPTIONS:
+             -h                    Show this help text
+             -d  <search query>    Download video
+             -v  <search query>    Play video (audio-only if not specified)
+```
 
-Command line arguments can be passed to specify the animal and eye style.
-- Valid animal arguments: kitty, k, bunny, b
-- Valid eye styles: integers from 0 to 13
+#### Examples
+- Stream audio
 
-Examples: `cutefetch kitty 6`, `cutefetch k 6`, `cutefetch` prints the default kitty.
-`cutefetch bunny 0`, `cutefetch b 0`, `cutefetch b`, etc. prints a bunny.
+	`ytplay <search-query>`
 
-PS: You can pass an eye style without an animal argument to print a kitty with that eye style.
+- Watch a video
 
-### Screenshots
+	`ytplay -v <search-query>`
 
-![desktop](https://imgur.com/tX8Fqt4.png)
+- Download a video
 
-### Links:
-- [original script](https://github.com/elenapan/dotfiles/blob/master/bin/bunnyfetch)
-- [author's repo](https://github.com/elenapan/dotfiles/)
+	`ytplay -d <search-query>`
+
+### Dependencies
+- [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
+- [mpv](https://github.com/mpv-player/mpv)
+- [youtube-dl](https://github.com/ytdl-org/youtube-dl)
+- [ffmpeg](https://github.com/FFmpeg/FFmpeg)
+
+### Installation
+- Download the file from the Releases page: [link](https://github.com/cybarspace/ytplay/releases/download/v1.0.0/ytplay.py)
+- Place it in your $PATH and make it executable.
+- Enjoy!
