@@ -1,33 +1,18 @@
-# THIS IS A PERSONAL FORK AND SUBJECT TO RANDOM CHANGES THAT MAY NOT WORK. USE AT YOUR OWN RISK.
-### I strongly recommend you to use the original script from [pystardust's repo](https://github.com/pystardust/ytfzf).
+# ytplay
 
-## ytplay
+### A Python3 script that helps you find YouTube videos without needing API keys, and opens using mpv/youtube-dl.
 
-A POSIX script that helps you find YouTube videos without needing API keys, and opens/downloads using mpv/youtube-dl.
-- History support
-- Download support
-- Format selection
-
-Initially this used to be a single line script. But for portability and extensibility I am breaking my vow. If you still are here for the memes then use the line below.
-
-```sh
-#!/bin/sh
-[ -z "$*" ] || curl "https://www.youtube.com/results" -s -G --data-urlencode "search_query=$*" |  pup 'script' | grep  "^ *var ytInitialData" | sed 's/^[^=]*=//g;s/;$//' | jq '..|.videoRenderer?' | sed '/^null$/d' | jq '.title.runs[0].text,.longBylineText.runs[0].text,.shortViewCountText.simpleText,.lengthText.simpleText,.publishedTimeText.simpleText,.videoId'| sed 's/^"//;s/"$//;s/\\"//g' | sed -E -n "s/(.{60}).*/\1/;N;s/\n(.{30}).*/\n\1/;N;N;N;N;s/\n/\t|/g;p" | column -t  -s "$(printf "\t")" | fzf --delimiter='\|' --nth=1,2  | sed -E 's_.*\|([^|]*)$_https://www.youtube.com/watch?v=\1_' | xargs -r -I'{}' mpv {}
-```
+PS: It works like music bots on Discord - plays the first search result.
 
 # Usage
 
-![Gif](ytfzf.gif)
-
-	Usage: ytfzf <search query>
-	     -h                    Show this help text
-	     -H                    Choose from history
-	     -D                    Delete history
-	     -m  <search query>    Audio only (for listening to music)
-	     -d  <search query>    Download to current directory
-	     -f  <search query>    Show available formats before proceeding
-	     -a  <search query>    Auto play the first result (no fzf)
-         -l  <search query>    loop: prompt again after video ends
+```
+Usage: ytplay [OPTIONS] <search query>
+	OPTIONS:
+    -h                    Show this help text
+    -v  <search query>    Play video (audio-only if not specified)
+    -d  <search query>    Download to current directory
+```
 
 * Video to be selected using fzf.
 * Searches based on title and channel names.
