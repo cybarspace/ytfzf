@@ -10,7 +10,7 @@ Usage: ytplay [OPTIONS] <search query>
            OPTIONS:
              -h                    Show this help text
              -d  <search query>    Download video
-             -v  <search query>    Play video (audio-only if not specified)
+             -v  <search query>    Play video
 ```
 
 #### Examples
