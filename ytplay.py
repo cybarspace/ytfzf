@@ -2,6 +2,9 @@
 # cython: language_level=3
 """
 Script to play media from YouTube
+
+@author: Sheikh Saad Abdullah
+My Github: https://github.com/cybarspace
 """
 # required imports
 from shutil import (
