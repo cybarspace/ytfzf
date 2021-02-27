@@ -17,6 +17,14 @@ import sys  # to exit with error codes
 import os  # to execute media player
 import re  # to find media URL from search results
 
+# important constants
+PLAYER = "mpv"  # the media player to use
+DOWNLOADER = "youtube-dl"  # program to process the youtube videos
+DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
+RESULT_NUM = 1  # the nth result to play or download
+# PS: Make sure to change the DLOAD_DIR to something else...
+# especially if you're using this script from Windows
+
 
 def error(err_code=0, msg="", **kwargs):
     """
@@ -33,6 +41,7 @@ def error(err_code=0, msg="", **kwargs):
             "Usage: ytplay [OPTIONS] <search query>\n"
             + "         OPTIONS:\n"
             + "         -h                    Show this help text\n"
+            + "         -d  <search query>    Download video\n"
             + "         -v  <search query>    Play video (audio-only if not specified)"
         )
     # print the given or default error message
@@ -60,12 +69,11 @@ def check_deps(deps_list):
             error(1, msg=f"Dependency {deps} not found.\nPlease install it.")
 
 
-def get_media_url(search_str="rickroll", result=0):
+def get_media_url(search_str="rickroll"):
     """
     Function to get media URL
 
     @param search_str: the string to search for
-    @param result: the nth result to get
     """
     # format the given search string for use in URLs
     query_string = parse.urlencode({"search_query": search_str})
@@ -82,23 +90,38 @@ def get_media_url(search_str="rickroll", result=0):
         # print error message and exit
         error(msg="No results found.")
     # select the first (or given) result and deduce its URL
-    media_url = "https://www.youtube.com/watch?v=" + search_results[result]
+    media_url = "https://www.youtube.com/watch?v=" + search_results[RESULT_NUM]
     # return the URL of requested media
     return media_url
 
 
-def play(options, search_str, player="mpv"):
+def play(options, search_str):
     """
     Call the media player and play requested media
 
     @param options: the command line arguments to the player
     @param search_str: the string to search for
-    @param player: the media player to play audio or video with
     """
     # check if dependencies are satisfied
-    check_deps((f"{player}", "youtube-dl"))
+    check_deps([PLAYER, DOWNLOADER])
     # if everything is ok, play requested media
-    os.system(f"{player} {options} {get_media_url(search_str)}")
+    os.system(f"{PLAYER} {options} {get_media_url(search_str)}")
+
+
+def download(search_str):
+    """
+    Call the media downloader and download requested media
+
+    @param search_str: the string to search for
+    """
+    # check if dependencies are satisfied
+    check_deps(
+        [DOWNLOADER, "ffmpeg"]
+    )  # ffmpeg may be needed to merge downloaded media
+    # if everything is ok, download requested media
+    os.system(
+        f"{DOWNLOADER} -o '{DLOAD_DIR}%(title)s.%(ext)s' {get_media_url(search_str)}"
+    )
 
 
 def main():
@@ -107,15 +130,27 @@ def main():
     """
     # parse flags and arguments
     try:
-        opts, extras = getopt.getopt(sys.argv[1:], "hv:")
+        opts, extras = getopt.getopt(sys.argv[1:], "hdv:")
 
         # decide whether to play video or audio only for the session
         try:
+            # if options contain help flag...
             if "-h" in opts[0]:
-                error()  # show help and exit normally
-            elif "-v" in opts[0]:
-                # prepare to play video with default quality
+                # show help and exit normally
+                error()
+            # if options contain download flag...
+            elif "-d" in opts[0]:
+                # process the name of media to search
                 req_search = opts[0][1] + " ".join(extras).rstrip()
+                # download the requested media
+                download(req_search)
+                # exit normally
+                sys.exit()
+            # if options contain video flag...
+            elif "-v" in opts[0]:
+                # process the name of media to search
+                req_search = opts[0][1] + " ".join(extras).rstrip()
+                # set flags to empty, to use defaults
                 flags = ""
         # when no flags are given...
         except IndexError:
