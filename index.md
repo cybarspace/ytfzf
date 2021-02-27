@@ -8,7 +8,7 @@ PS: It works just like music bots on Discord - plays or downloads the first sear
 ```
 Usage: ytplay [OPTIONS] <search query>
            OPTIONS:
-             -h                    Show this help text
+             -h                    Show help text
              -d  <search query>    Download video
              -v  <search query>    Play video
 ```
