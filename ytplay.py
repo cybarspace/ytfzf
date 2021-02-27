@@ -4,25 +4,52 @@
 Script to play media from YouTube
 """
 # required imports
-from urllib import request
-from urllib import parse
-import getopt
-import sys
-import os
-import re
+from shutil import (
+    which as installed,
+)  # to check if required dependencies are installed
+from urllib import request  # to get data from YouTube
+from urllib import parse  # to parse data obtained
+import getopt  # to parse command-line arguments
+import sys  # to exit with error codes
+import os  # to execute media player
+import re  # to find media URL from search results
 
 
-def error(err_code=0, msg="ytplay [-v] <search-query>"):
+def error(err_code=0, msg="ytplay [-v] <search-query>", **kwargs):
     """
     Show an error message and exit with requested error code
+
+    @param err_code: the error code
+    @param msg: the error message
+    @param **kwargs: extra messages
     """
+    # print the default or given message
     print(msg)
+    # if any extra messages are given...
+    for err, err_msg in kwargs.items():
+        # print the extra messages
+        print(f"{err}: {err_msg}")
+    # exit with given or default error code
     sys.exit(err_code)
+
+
+def check_deps(deps_list):
+    """
+    Check if required dependencies are installed
+
+    @param deps_list: list of dependencies to check
+    """
+    for deps in deps_list:
+        if not installed(deps):
+            error(1, msg=f"Dependency {deps} not found.\nPlease install it.")
 
 
 def get_media_url(search_str="rickroll", result=0):
     """
     Function to get media URL
+
+    @param search_str: the string to search for
+    @param result: the nth result to get
     """
     # format the given search string for use in URLs
     query_string = parse.urlencode({"search_query": search_str})
@@ -47,7 +74,14 @@ def get_media_url(search_str="rickroll", result=0):
 def play(options, search_str, player="mpv"):
     """
     Call the media player and play requested media
+
+    @param options: the command line arguments to the player
+    @param search_str: the string to search for
+    @param player: the media player to play audio or video with
     """
+    # check if dependencies are satisfied
+    check_deps((f"{player}", "youtube-dl"))
+    # if everything is ok, play requested media
     os.system(f"{player} {options} {get_media_url(search_str)}")
 
 
@@ -71,15 +105,15 @@ def main():
         except IndexError:
             # and no arguments are given...
             if len(extras) == 0:
-                error(2)  # show help and exit with error code 2
+                # show help and exit with error code 2
+                error(2, NoArgs="Nothing given to search.")
             # but if arguments are given,
             # prepare to play audio with best quality
             flags = "--ytdl-format=bestaudio --no-video"
             req_search = " ".join(extras).strip()
     # if invalid flags are used...
     except getopt.GetoptError:
-        print("ytplay [-v] <search-query>")
-        sys.exit(2)
+        error(2, UnknownArgs="Unknown options given.")
 
     # play the requested item and loop over input
     while req_search != "q":
