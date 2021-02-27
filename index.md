@@ -6,7 +6,7 @@ PS: It works just like music bots on Discord - plays or downloads the first sear
 
 ### Installation
 - Download the file by clicking on the button to the left.
-- Place it in your $PATH and make it executable.
+- Place it in your `$PATH` and make it executable.
 - Enjoy!
 
 ### Usage
