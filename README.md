@@ -2,7 +2,7 @@
 
 ### A Python3 script that helps you find YouTube videos without needing API keys, and opens or downloads it using mpv/youtube-dl.
 
-PS: It works like music bots on Discord - plays the first search result.
+PS: It works just like music bots on Discord - plays or downloads the first search result.
 
 ### Usage
 ```
