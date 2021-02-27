@@ -4,6 +4,11 @@
 
 PS: It works just like music bots on Discord - plays or downloads the first search result.
 
+### Installation
+- Download the file by clicking on the button to the left.
+- Place it in your $PATH and make it executable.
+- Enjoy!
+
 ### Usage
 ```
 Usage: ytplay [OPTIONS] <search query>
@@ -31,8 +36,3 @@ Usage: ytplay [OPTIONS] <search query>
 - [mpv](https://github.com/mpv-player/mpv)
 - [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 - [ffmpeg](https://github.com/FFmpeg/FFmpeg)
-
-### Installation
-- Download the file from the Releases page: [link](https://github.com/cybarspace/ytplay/releases/download/v1.0.0/ytplay.py)
-- Place it in your $PATH and make it executable.
-- Enjoy!
