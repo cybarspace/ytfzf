@@ -84,13 +84,13 @@ def get_media_url(search_str="rickroll"):
         .decode()
     )
     # find the list of video IDs from result page
-    search_results = re.findall(r'"videoId":"(.{11})"', html_content)
+    search_result = re.search(r'"videoId":"(.{11})"', html_content)
     # if no results are found...
-    if len(search_results) == 0:
+    if not search_result:
         # print error message and exit
         error(msg="No results found.")
     # select the first (or given) result and deduce its URL
-    media_url = "https://www.youtube.com/watch?v=" + search_results[RESULT_NUM]
+    media_url = "https://www.youtube.com/watch?v=" + search_result.group(0)
     # return the URL of requested media
     return media_url
 
