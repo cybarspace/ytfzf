@@ -166,10 +166,11 @@ cpdef void main():
         # when no flags are given...
         except IndexError:
             # and no arguments are given...
-            if len(extras) == 0:
-                # show help and exit with error code 2
-                error(2, NoArgs="Nothing given to search.")
-            # but if arguments are given,
+            while len(extras) == 0:
+                # keep nagging user for input
+                print("Please enter search query:")
+                extras = input("❮λ❯ ").split()
+            # when arguments are given,
             # prepare to play audio with best quality
             flags = "--ytdl-format=bestaudio --no-video"
             req_search = " ".join(extras).strip()
