@@ -42,3 +42,11 @@ Usage: ytplay [OPTIONS] <search query>
 ### Credits
 - [pystardust](https://github.com/pystardust)'s [ytfzf](https://github.com/pystardust/ytfzf)
 - [This article](https://www.codeproject.com/articles/873060/python-search-youtube-for-video) I found during my quest to implement a simplified version of ytfzf in Python3
+
+### About the `.pyx` file...
+
+Cython is supposed to be faster but I don't really know Cython so I couldn't optimize it as well. If you can, feel free to make a fork, and maybe even a pull request so I can review and merge. It'll be a learning experience for me.
+
+As for the performance... It may be slightly faster but the program is still network-bound. Faster internet = faster query.
+
+Compile an executable file using [this shell script](https://github.com/cybarspace/cymake) if you want. Please note that it behaves a bit differently from the Python version. That is intentional - I wanted two "flavors".
