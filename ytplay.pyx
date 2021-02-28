@@ -22,7 +22,6 @@ cdef:
     str PLAYER = "mpv"  # the media player to use
     str DOWNLOADER = "youtube-dl"  # program to process the youtube videos
     str DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
-    int RESULT_NUM = 1  # the nth result to play or download
 # PS: Make sure to change the DLOAD_DIR to what you prefer...
 # especially if you're using this script from Windows
 
@@ -79,8 +78,10 @@ cpdef str get_media_url(str search_str="rickroll"):
     @param search_str: the string to search for
     """
     cdef:
-        list search_results
-        str query_string, html_content, media_url
+        int START_POS = 126083
+        str query_string, html_content, video_id, media_url
+    # compile regex pattern for faster search
+    VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
     # format the given search string for use in URLs
     query_string = parse.urlencode({"search_query": search_str})
     # get the YouTube search-result page for given search string
@@ -89,14 +90,15 @@ cpdef str get_media_url(str search_str="rickroll"):
         .read()
         .decode()
     )
-    # find the list of video IDs from result page
-    search_results = re.findall(r'"videoId":"(.{11})"', html_content)
+    # find the first video ID from result page
+    search_result = VIDEO_ID_RE.search(html_content, START_POS)
     # if no results are found...
-    if len(search_results) == 0:
+    if not search_result:
         # print error message and exit
         error(msg="No results found.")
-    # select the first (or given) result and deduce its URL
-    media_url = "https://www.youtube.com/watch?v=" + search_results[RESULT_NUM]
+    # select the first result and deduce its URL
+    video_id = search_result.group()[11:-1]  # extract the video ID
+    media_url = "https://www.youtube.com/watch?v=" + video_id  # process the URL
     # return the URL of requested media
     return media_url
 
