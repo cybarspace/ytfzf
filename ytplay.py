@@ -90,7 +90,7 @@ def get_media_url(search_str="rickroll"):
         # print error message and exit
         error(msg="No results found.")
     # select the first (or given) result and deduce its URL
-    media_url = "https://www.youtube.com/watch?v=" + search_result.group(0)
+    media_url = "https://www.youtube.com/watch?v=" + search_result.group(RESULT_NUM - 1)
     # return the URL of requested media
     return media_url
 
