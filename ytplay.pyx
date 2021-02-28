@@ -78,7 +78,8 @@ cpdef str get_media_url(str search_str="rickroll"):
     @param search_str: the string to search for
     """
     cdef:
-        int START_POS = 126083
+        int START_POS = 126084
+        int PAGE_LIMIT = 165000
         str query_string, html_content, video_id, media_url
     # compile regex pattern for faster search
     VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
@@ -87,7 +88,7 @@ cpdef str get_media_url(str search_str="rickroll"):
     # get the YouTube search-result page for given search string
     html_content = (
         request.urlopen("https://www.youtube.com/results?" + query_string)
-        .read()
+        .read(PAGE_LIMIT)
         .decode()
     )
     # find the first video ID from result page
