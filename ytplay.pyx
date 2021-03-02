@@ -79,7 +79,7 @@ cpdef str get_media_url(str search_str="rickroll"):
     """
     cdef:
         int START_POS = 126084
-        int PAGE_LIMIT = 165000
+        int PAGE_LIMIT = 155420
         str query_string, html_content, video_id, media_url
     # compile regex pattern for faster search
     VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
@@ -170,7 +170,7 @@ cpdef void main():
             while len(extras) == 0:
                 # keep nagging user for input
                 print("Please enter search query:")
-                extras = input("❮λ❯ ").split()
+                extras = input("❮🎵❯ ").split()
             # when arguments are given,
             # prepare to play audio with best quality
             flags = "--ytdl-format=bestaudio --no-video"
