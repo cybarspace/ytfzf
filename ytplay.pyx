@@ -19,6 +19,7 @@ import re  # to find media URL from search results
 
 # important constants
 cdef:
+    str OP_MODE = "music"  # play either "video" or "music" when no args given
     str PLAYER = "mpv"  # the media player to use
     str DOWNLOADER = "youtube-dl"  # program to process the youtube videos
     str DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
@@ -26,7 +27,7 @@ cdef:
 # especially if you're using this script from Windows
 
 
-def error(int err_code=0, msg="", **kwargs):
+def error(int err_code=0, str msg="", **kwargs):
     """
     Show an error message and exit with requested error code
 
@@ -39,11 +40,11 @@ def error(int err_code=0, msg="", **kwargs):
     if len(msg) == 0:
         # set the error message to usage info
         msg = str(
-            "Usage: ytplay [OPTIONS] <search query>\n"
-            + "           OPTIONS:\n"
+            f"Usage: ytplay [OPTIONS] <search query>\n"
+            + "         OPTIONS:\n"
             + "             -h                    Show this help text\n"
-            + "             -d  <search query>    Download video\n"
-            + "             -v  <search query>    Play video (audio-only if not specified)"
+            + "             -d  <search query>    Download video to {DLOAD_DIR}\n"
+            + "             -v  <search query>    Play video (script plays audio-only by default)"
         )
     # print the given or default error message
     print(msg)
@@ -79,7 +80,7 @@ cpdef str get_media_url(str search_str="rickroll"):
     """
     cdef:
         int START_POS = 126084
-        int PAGE_LIMIT = 155420
+        #int PAGE_LIMIT = 155420  # doesn't work but I'd like it to
         str query_string, html_content, video_id, media_url
     # compile regex pattern for faster search
     VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
@@ -88,7 +89,7 @@ cpdef str get_media_url(str search_str="rickroll"):
     # get the YouTube search-result page for given search string
     html_content = (
         request.urlopen("https://www.youtube.com/results?" + query_string)
-        .read(PAGE_LIMIT)
+        .read()
         .decode()
     )
     # find the first video ID from result page
@@ -133,13 +134,30 @@ cpdef void download(str search_str):
     )
 
 
+cpdef list sentinel_prompt(list ans, str sym="λ"):
+    """
+    Propmt to keep asking user for input
+    until a valid input is given
+
+    @param ans the initil user input
+    @param sym the symbol to show in the prompt (purely decorative)
+    """
+    # while no answer is given...
+    while len(ans) == 0:
+        # keep nagging user for input
+        print("Please enter search query:")
+        ans = input(f"❮{sym}❯ ").split()
+    # return the entered words as a list
+    return ans
+
+
 cpdef void main():
     """
     Main program logic
     """
     cdef:
-        list opts, extras
         str req_search, flags, answer
+        list opts, extras
     # parse flags and arguments
     try:
         opts, extras = getopt.getopt(sys.argv[1:], "hdv:")
@@ -167,13 +185,23 @@ cpdef void main():
         # when no flags are given...
         except IndexError:
             # and no arguments are given...
-            while len(extras) == 0:
-                # keep nagging user for input
-                print("Please enter search query:")
-                extras = input("❮🎵❯ ").split()
+            if OP_MODE == "music":
+                # and default operation mode is set to music...
+                extras = sentinel_prompt(extras, "🎵")
+                flags = "--ytdl-format=bestaudio --no-video"
+            elif OP_MODE == "video":
+                # and default operation mode is set to video...
+                extras = sentinel_prompt(extras, "🎬")
+                flags = ""
+            else:
+                # if default operation mode is invalid, raise error
+                error(
+                    2,
+                    UnknownValue="variable OP_MODE has an unknown value."
+                            + "\nValid options are \"music\" and \"video\""
+                )
             # when arguments are given,
             # prepare to play audio with best quality
-            flags = "--ytdl-format=bestaudio --no-video"
             req_search = " ".join(extras).strip()
     # if invalid flags are used...
     except getopt.GetoptError:
