@@ -7,9 +7,7 @@ Script to play media from YouTube
 My Github: https://github.com/cybarspace
 """
 # required imports
-from shutil import (
-    which as installed,
-)  # to check if required dependencies are installed
+from shutil import which as installed  # to check dependencies
 from urllib import request  # to get data from YouTube
 from urllib import parse  # to parse data obtained
 import getopt  # to parse command-line arguments
@@ -17,12 +15,18 @@ import sys  # to exit with error codes
 import os  # to execute media player
 import re  # to find media URL from search results
 
-# important constants
+# important constants (some can be altered by environment variables)
 cdef:
-    str OP_MODE = "music"  # play either "video" or "music" when no args given
-    str PLAYER = "mpv"  # the media player to use
-    str DOWNLOADER = "youtube-dl"  # program to process the youtube videos
-    str DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
+    # the nth result to play
+    int RES_NUM = int(os.environ.get("YT_NUM", 1))
+    # play either "video" or "music" when no args given
+    str OP_MODE = os.environ.get("YT_MODE", "music")
+    # where to put downloaded files
+    str DLOAD_DIR = os.environ.get("YT_DLOAD_DIR", "$HOME/Videos/")
+    # the media player to use
+    str PLAYER = "mpv"
+    # program to process the youtube videos
+    str DOWNLOADER = "youtube-dl"
 # PS: Make sure to change the DLOAD_DIR to what you prefer...
 # especially if you're using this script from Windows
 
@@ -72,6 +76,21 @@ cpdef void check_deps(list deps_list):
             error(1, msg=f"Dependency {deps} not found.\nPlease install it.")
 
 
+def filter_dupes(list li):
+    """
+    Generate to filter out duplicates from a list of strings
+
+    @param li: the list to be filtered
+    """
+    cdef:
+        str id
+        set seen = set()
+    for id in li:
+        if id not in seen:
+            seen.add(id)
+            yield id
+
+
 cpdef str get_media_url(str search_str="rickroll"):
     """
     Function to get media URL
@@ -80,8 +99,8 @@ cpdef str get_media_url(str search_str="rickroll"):
     """
     cdef:
         int START_POS = 126084
-        #int PAGE_LIMIT = 155420  # doesn't work but I'd like it to
         str query_string, html_content, video_id, media_url
+        list search_results
     # compile regex pattern for faster search
     VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
     # format the given search string for use in URLs
@@ -93,13 +112,14 @@ cpdef str get_media_url(str search_str="rickroll"):
         .decode()
     )
     # find the first video ID from result page
-    search_result = VIDEO_ID_RE.search(html_content, START_POS)
+    search_results = VIDEO_ID_RE.findall(html_content, START_POS)
     # if no results are found...
-    if not search_result:
+    if len(search_results) == 0:
         # print error message and exit
         error(msg="No results found.")
     # select the first result and deduce its URL
-    video_id = search_result.group()[11:-1]  # extract the video ID
+    search_results = list(filter_dupes(search_results))
+    video_id = search_results[RES_NUM - 1]  # extract the video ID
     media_url = "https://www.youtube.com/watch?v=" + video_id  # process the URL
     # return the URL of requested media
     return media_url
