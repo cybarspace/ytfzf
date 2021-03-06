@@ -102,7 +102,6 @@ cpdef str get_media_url(str search_str="rickroll"):
     @param search_str: the string to search for
     """
     cdef:
-        int START_POS = 126084
         str query_string, html_content, video_id, media_url
         list search_results
     # compile regex pattern for faster search
@@ -116,7 +115,7 @@ cpdef str get_media_url(str search_str="rickroll"):
         .decode()
     )
     # find the first video ID from result page
-    search_results = VIDEO_ID_RE.findall(html_content, START_POS)
+    search_results = VIDEO_ID_RE.findall(html_content)
     # if no results are found...
     if len(search_results) == 0:
         # print error message and exit
