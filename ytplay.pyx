@@ -83,11 +83,15 @@ def filter_dupes(list li):
     @param li: the list to be filtered
     """
     cdef:
-        str id
-        set seen = set()
+        str id  # a video ID in the list li
+        set seen = set()  # set of seen IDs
+    # for each video ID in list li...
     for id in li:
+        # if it's unique...
         if id not in seen:
+            # add it to the list of seen IDs
             seen.add(id)
+            # and return it to the caller
             yield id
 
 
@@ -232,7 +236,7 @@ cpdef void main():
         # call the mpv media player with processed flags and URL
         play(flags, req_search)
         # when done, ask if user wants to repeat the last played media
-        answer = input("Repeat? (y/n): ")
+        answer = input("Play again? (y/n): ")
         # process user request
         if answer.lower() == "n":
             # if user answers no,
