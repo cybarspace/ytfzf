@@ -51,7 +51,7 @@ Usage: ytplay [OPTIONS] <search query>
 
 - Download a video to a directory other than `$HOME/Videos/`:
 
-    `YT_DLOAD_DIR=$HOME/Downloads/ ytplay -d darude sandstorm`
+    `YT_DLOAD_DIR="$HOME/Downloads/" ytplay -d darude sandstorm`
 
 <div id="credits"></div>
 ### Credits
