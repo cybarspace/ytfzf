@@ -8,22 +8,20 @@
 - [Credits](#credits)
 - [Extras](#extras)
 
-<div id="deps">
+<div id="deps"></div>
 ### Dependencies
 - [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
 - [mpv](https://github.com/mpv-player/mpv)
 - [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 - [ffmpeg](https://github.com/FFmpeg/FFmpeg)
-</div>
 
-<div id="install">
+<div id="install"></div>
 ### Installation
 - Download the file from the Releases page: [ytplay](https://github.com/cybarspace/ytplay/releases/download/v1.1.0/ytplay)
 - Place it in your `$PATH` and make it executable.
 - Enjoy!
-</div>
 
-<div id="usage">
+<div id="usage"></div>
 ### Usage
 ```
 Usage: ytplay [OPTIONS] <search query>
@@ -32,9 +30,8 @@ Usage: ytplay [OPTIONS] <search query>
              -d  <search query>    Download video
              -v  <search query>    Play video
 ```
-</div>
 
-<div id="examples">
+<div id="examples"></div>
 #### Examples
 - Stream audio:
 
@@ -55,15 +52,13 @@ Usage: ytplay [OPTIONS] <search query>
 - Download a video to a directory other than `$HOME/Videos`:
 
     `YT_DLOAD_DIR=$HOME/Downloads/ ytplay -d darude sandstorm`
-</div>
 
-<div id="credits">
+<div id="credits"></div>
 ### Credits
 - [pystardust](https://github.com/pystardust)'s [ytfzf](https://github.com/pystardust/ytfzf)
 - [This article](https://www.codeproject.com/articles/873060/python-search-youtube-for-video) I found during my quest to implement a simplified version of ytfzf in Python3
-</div>
 
-<div id="extras">
+<div id="extras"></div>
 ### Extras
 **About the `.pyx` file...**
 
@@ -72,4 +67,3 @@ Cython is supposed to be faster but I don't really know Cython so I couldn't opt
 As for the performance... It may be slightly faster but the program is still network-bound. Which means, faster internet = faster query = media is played sooner.
 
 Compile an executable file using [this shell script](https://github.com/cybarspace/cymake) if you want.
-</div>
