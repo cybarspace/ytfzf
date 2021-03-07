@@ -1,6 +1,9 @@
 ## A Python script to play media from YouTube without needing API keys.
 
 ### Sections:
+
+Click to navigate.
+
 - [Dependencies](#deps)
 - [Installation](#install)
 - [Usage](#usage)
