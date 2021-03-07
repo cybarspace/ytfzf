@@ -1,17 +1,27 @@
-# ytplay
-
 ![figlet](https://user-images.githubusercontent.com/50134239/109390169-2c1b9000-793a-11eb-94d4-d6b3edc631b7.png)
 
-### A Python script that helps you find YouTube videos without needing API keys, and opens or downloads it using mpv/youtube-dl.
+## A Python script to play media from YouTube without needing API keys.
 
-PS: It works just like music bots on Discord - plays or downloads the first search result.
+## Sections:
+- [Dependencies](#Dependencies)
+- [Installation](#Installation)
+- [Usage](#Usage)
+    - [Examples](#Examples)
+- [Credits](#Credits)
+- [Extras](#Extras)
 
-### Installation
-- Download the file from the Releases page: [link](https://github.com/cybarspace/ytplay/releases/download/v1.0.0/ytplay.py)
+## Dependencies
+- [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
+- [mpv](https://github.com/mpv-player/mpv)
+- [youtube-dl](https://github.com/ytdl-org/youtube-dl)
+- [ffmpeg](https://github.com/FFmpeg/FFmpeg)
+
+## Installation
+- Download the file from the Releases page: [ytplay](https://github.com/cybarspace/ytplay/releases/download/v1.1.0/ytplay)
 - Place it in your `$PATH` and make it executable.
 - Enjoy!
 
-### Usage
+## Usage
 ```
 Usage: ytplay [OPTIONS] <search query>
            OPTIONS:
@@ -21,32 +31,35 @@ Usage: ytplay [OPTIONS] <search query>
 ```
 
 #### Examples
-- Stream audio
+- Stream audio:
 
-	`ytplay <search-query>`
+	`ytplay gurenge band cover`
 
-- Watch a video
+- Watch a video:
 
-	`ytplay -v <search-query>`
+	`ytplay -v rickroll`
 
-- Download a video
+- Download a video:
 
-	`ytplay -d <search-query>`
+	`ytplay -d penguin flock`
 
-### Dependencies
-- [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
-- [mpv](https://github.com/mpv-player/mpv)
-- [youtube-dl](https://github.com/ytdl-org/youtube-dl)
-- [ffmpeg](https://github.com/FFmpeg/FFmpeg)
+- Play the audio of the second search result:
 
-### Credits
+    `YT_NUM=2 ytplay plastic love daft punk`
+
+- Download a video to a directory other than `$HOME/Videos`:
+
+    `YT_DLOAD_DIR=$HOME/Downloads/ ytplay -d darude sandstorm`
+
+## Credits
 - [pystardust](https://github.com/pystardust)'s [ytfzf](https://github.com/pystardust/ytfzf)
 - [This article](https://www.codeproject.com/articles/873060/python-search-youtube-for-video) I found during my quest to implement a simplified version of ytfzf in Python3
 
-### About the `.pyx` file...
+## Extras
+**About the `.pyx` file...**
 
-Cython is supposed to be faster but I don't really know Cython so I couldn't optimize it as well. If you can, feel free to make a fork, and maybe even a pull request so I can review and merge. It'll be a learning experience for me.
+Cython is supposed to be faster but I don't really know Cython so I couldn't optimize it as well. If you can do so, feel free to make a fork, and maybe even a pull request so the script can be improved. It'll be a learning experience for me as well.
 
-As for the performance... It may be slightly faster but the program is still network-bound. Faster internet = faster query.
+As for the performance... It may be slightly faster but the program is still network-bound. Which means, faster internet = faster query = media is played sooner.
 
-Compile an executable file using [this shell script](https://github.com/cybarspace/cymake) if you want. Please note that it behaves a bit differently from the Python version. That is intentional - I wanted two "flavors".
+Compile an executable file using [this shell script](https://github.com/cybarspace/cymake) if you want.
