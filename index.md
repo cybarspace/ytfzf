@@ -49,7 +49,7 @@ Usage: ytplay [OPTIONS] <search query>
 
     `YT_NUM=2 ytplay plastic love daft punk`
 
-- Download a video to a directory other than `$HOME/Videos/`:
+- Download a video to a directory other than `$HOME/Videos/` (default location):
 
     `YT_DLOAD_DIR="$HOME/Downloads/" ytplay -d darude sandstorm`
 
