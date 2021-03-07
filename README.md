@@ -2,7 +2,7 @@
 
 ## A Python script to play media from YouTube without needing API keys.
 
-## Sections:
+### Sections:
 - [Dependencies](#Dependencies)
 - [Installation](#Installation)
 - [Usage](#Usage)
@@ -10,18 +10,18 @@
 - [Credits](#Credits)
 - [Extras](#Extras)
 
-## Dependencies
+### Dependencies
 - [Python 3](https://www.python.org/downloads/) (tested on PyPy 3.7.9 and CPython 3.9.1)
 - [mpv](https://github.com/mpv-player/mpv)
 - [youtube-dl](https://github.com/ytdl-org/youtube-dl)
 - [ffmpeg](https://github.com/FFmpeg/FFmpeg)
 
-## Installation
+### Installation
 - Download the file from the Releases page: [ytplay](https://github.com/cybarspace/ytplay/releases/download/v1.1.0/ytplay)
 - Place it in your `$PATH` and make it executable.
 - Enjoy!
 
-## Usage
+### Usage
 ```
 Usage: ytplay [OPTIONS] <search query>
            OPTIONS:
@@ -51,11 +51,11 @@ Usage: ytplay [OPTIONS] <search query>
 
     `YT_DLOAD_DIR=$HOME/Downloads/ ytplay -d darude sandstorm`
 
-## Credits
+### Credits
 - [pystardust](https://github.com/pystardust)'s [ytfzf](https://github.com/pystardust/ytfzf)
 - [This article](https://www.codeproject.com/articles/873060/python-search-youtube-for-video) I found during my quest to implement a simplified version of ytfzf in Python3
 
-## Extras
+### Extras
 **About the `.pyx` file...**
 
 Cython is supposed to be faster but I don't really know Cython so I couldn't optimize it as well. If you can do so, feel free to make a fork, and maybe even a pull request so the script can be improved. It'll be a learning experience for me as well.
