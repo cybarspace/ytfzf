@@ -7,9 +7,7 @@ Script to play media from YouTube
 My Github: https://github.com/cybarspace
 """
 # required imports
-from shutil import (
-    which as installed,
-)  # to check if required dependencies are installed
+from shutil import which as installed  # to check dependencies
 from urllib import request  # to get data from YouTube
 from urllib import parse  # to parse data obtained
 import getopt  # to parse command-line arguments
@@ -17,11 +15,17 @@ import sys  # to exit with error codes
 import os  # to execute media player
 import re  # to find media URL from search results
 
-# important constants
-PLAYER = "mpv"  # the media player to use
-DOWNLOADER = "youtube-dl"  # program to process the youtube videos
-DLOAD_DIR = "$HOME/Videos/"  # where to put downloaded files
-RESULT_NUM = 1  # the nth result to play or download
+# important constants (some can be altered by environment var    iables)
+# the nth result to play or download
+RESULT_NUM = int(os.environ.get("YT_NUM", 1))
+# play either "video" or "music" when no args given
+OP_MODE = os.environ.get("YT_MODE", "music")
+# where to put downloaded files
+DLOAD_DIR = os.environ.get("YT_DLOAD_DIR", "$HOME/Videos/")
+# the media player to use
+PLAYER = "mpv"
+# program to process the youtube videos
+DOWNLOADER = "youtube-dl"
 # PS: Make sure to change the DLOAD_DIR to what you prefer...
 # especially if you're using this script from Windows
 
@@ -42,7 +46,7 @@ def error(err_code=0, msg="", **kwargs):
             + "           OPTIONS:\n"
             + "             -h                    Show this help text\n"
             + "             -d  <search query>    Download video\n"
-            + "             -v  <search query>    Play video (audio-only if not specified)"
+            + "             -v  <search query>    Play video (script plays audio-only by default)"
         )
     # print the given or default error message
     print(msg)
@@ -69,12 +73,32 @@ def check_deps(deps_list):
             error(1, msg=f"Dependency {deps} not found.\nPlease install it.")
 
 
+def filter_dupes(id_list):
+    """
+    Generate to filter out duplicates from a list of strings
+
+    @param li: the list to be filtered
+    """
+    seen = set()  # set of seen IDs
+    # for each video ID in list li...
+    for video_id in id_list:
+        # if it's unique...
+        if video_id not in seen:
+            # add it to the list of seen IDs
+            seen.add(video_id)
+            # and return it to the caller
+            yield video_id
+
+
 def get_media_url(search_str="rickroll"):
     """
     Function to get media URL
 
     @param search_str: the string to search for
+    @return the deduced media URL
     """
+    # compile regex pattern for faster search
+    video_id_re = re.compile(r'"videoId":"(.{11})"')
     # format the given search string for use in URLs
     query_string = parse.urlencode({"search_query": search_str})
     # get the YouTube search-result page for given search string
@@ -84,13 +108,15 @@ def get_media_url(search_str="rickroll"):
         .decode()
     )
     # find the list of video IDs from result page
-    search_result = re.findall(r'"videoId":"(.{11})"', html_content)
+    search_results = list(filter_dupes(video_id_re.findall(html_content)))
     # if no results are found...
-    if len(search_result) == 0:
+    if len(search_results) == 0:
         # print error message and exit
         error(msg="No results found.")
-    # select the first (or given) result and deduce its URL
-    media_url = "https://www.youtube.com/watch?v=" + search_result[RESULT_NUM - 1]
+    # select the nth result...
+    video_id = search_results[RESULT_NUM - 1]
+    # and deduce its URL
+    media_url = "https://www.youtube.com/watch?v=" + video_id
     # return the URL of requested media
     return media_url
 
@@ -124,6 +150,24 @@ def download(search_str):
     )
 
 
+def sentinel_prompt(ans, sym="λ"):
+    """
+    Propmt to keep asking user for input
+    until a valid input is given
+
+    @param ans the initil user input
+    @param sym the symbol to show in the prompt (purely decorative)
+    @return string of query words
+    """
+    # while no answer is given...
+    while len(ans) == 0:
+        # keep nagging user for input
+        print("Please enter search query:")
+        ans = " ".join(input(f"❮{sym}❯ ").split()).strip()
+    # return the entered words as a string
+    return ans
+
+
 def main():
     """
     Main program logic
@@ -155,24 +199,32 @@ def main():
         # when no flags are given...
         except IndexError:
             # and no arguments are given...
-            while len(extras) == 0:
-                # keep nagging user for input
-                print("Please enter search query:")
-                extras = input("❮🎵❯ ").split()
-            # when arguments are given,
-            # prepare to play audio with best quality
-            flags = "--ytdl-format=bestaudio --no-video"
-            req_search = " ".join(extras).strip()
+            if OP_MODE == "music":
+                # and default operation mode is set to music...
+                prompt_sym = "🎵"
+                flags = "--ytdl-format=bestaudio --no-video"
+            elif OP_MODE == "video":
+                # and default operation mode is set to music...
+                prompt_sym = "🎬"
+                flags = ""
+            else:
+                error(
+                    2,
+                    UnknownValue="variable OP_MODE has an unknown value."
+                    + '\nValid options are "music" and "video"',
+                )
+            # when arguments are given, prepare to play media
+            req_search = sentinel_prompt(extras, prompt_sym)
     # if invalid flags are used...
     except getopt.GetoptError:
         error(2, UnknownArgs="Unknown options given.")
 
     # play the requested item and loop over input
-    while req_search != "q":
+    while req_search not in ["q", ""]:
         # call the mpv media player with processed flags and URL
         play(flags, req_search)
         # when done, ask if user wants to repeat the last played media
-        answer = input("Repeat? (y/n): ")
+        answer = input("Play again? (y/n): ")
         # process user request
         if answer.lower() == "n":
             # if user answers no,

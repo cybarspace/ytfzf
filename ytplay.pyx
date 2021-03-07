@@ -115,13 +115,12 @@ cpdef str get_media_url(str search_str="rickroll"):
         .decode()
     )
     # find the first video ID from result page
-    search_results = VIDEO_ID_RE.findall(html_content)
+    search_results = list(filter_dupes(VIDEO_ID_RE.findall(html_content)))
     # if no results are found...
     if len(search_results) == 0:
         # print error message and exit
         error(msg="No results found.")
-    # select the first result and deduce its URL
-    search_results = list(filter_dupes(search_results))
+    # select the nth result and deduce its URL
     video_id = search_results[RES_NUM - 1]  # extract the video ID
     media_url = "https://www.youtube.com/watch?v=" + video_id  # process the URL
     # return the URL of requested media
@@ -157,21 +156,22 @@ cpdef void download(str search_str):
     )
 
 
-cpdef list sentinel_prompt(list ans, str sym="λ"):
+cpdef str sentinel_prompt(list ans, str sym="λ"):
     """
     Propmt to keep asking user for input
     until a valid input is given
 
     @param ans the initil user input
     @param sym the symbol to show in the prompt (purely decorative)
+    @return string of query words
     """
     # while no answer is given...
     while len(ans) == 0:
         # keep nagging user for input
         print("Please enter search query:")
         ans = input(f"❮{sym}❯ ").split()
-    # return the entered words as a list
-    return ans
+    # return the entered words as a string
+    return str(" ".join(ans).strip())
 
 
 cpdef void main():
@@ -179,7 +179,7 @@ cpdef void main():
     Main program logic
     """
     cdef:
-        str req_search, flags, answer
+        str req_search, flags, answer, prompt_sym
         list opts, extras
     # parse flags and arguments
     try:
@@ -210,11 +210,11 @@ cpdef void main():
             # and no arguments are given...
             if OP_MODE == "music":
                 # and default operation mode is set to music...
-                extras = sentinel_prompt(extras, "🎵")
+                prompt_sym = "🎵"
                 flags = "--ytdl-format=bestaudio --no-video"
             elif OP_MODE == "video":
                 # and default operation mode is set to video...
-                extras = sentinel_prompt(extras, "🎬")
+                prompt_sym = "🎬"
                 flags = ""
             else:
                 # if default operation mode is invalid, raise error
@@ -223,15 +223,14 @@ cpdef void main():
                     UnknownValue="variable OP_MODE has an unknown value."
                             + "\nValid options are \"music\" and \"video\""
                 )
-            # when arguments are given,
-            # prepare to play audio with best quality
-            req_search = " ".join(extras).strip()
+            # when arguments are given, prepare to play media
+            req_search = sentinel_prompt(extras, prompt_sym)
     # if invalid flags are used...
     except getopt.GetoptError:
         error(2, UnknownArgs="Unknown options given.")
 
     # play the requested item and loop over input
-    while req_search != "q":
+    while req_search not in ["q", ""]:
         # call the mpv media player with processed flags and URL
         play(flags, req_search)
         # when done, ask if user wants to repeat the last played media
