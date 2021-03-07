@@ -7,6 +7,9 @@
 #### This is the Github Pages branch for the ytplay project webpage.
 
 ### Sections:
+
+Click to navigate.
+
 - [Dependencies](#Dependencies)
 - [Installation](#Installation)
 - [Usage](#Usage)
