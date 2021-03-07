@@ -4,7 +4,7 @@
 - [Dependencies](#deps)
 - [Installation](#install)
 - [Usage](#usage)
-    - [Examples](#examples)
+  - [Examples](#examples)
 - [Credits](#credits)
 - [Extras](#extras)
 
@@ -60,7 +60,7 @@ Usage: ytplay [OPTIONS] <search query>
 
 <div id="extras"></div>
 ### Extras
-**About the `.pyx` file...**
+*About the `.pyx` file...*
 
 Cython is supposed to be faster but I don't really know Cython so I couldn't optimize it as well. If you can do so, feel free to make a fork, and maybe even a pull request so the script can be improved. It'll be a learning experience for me as well.
 
