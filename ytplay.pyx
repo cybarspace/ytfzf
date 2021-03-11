@@ -183,51 +183,50 @@ cpdef void main():
         list opts, extras
     # parse flags and arguments
     try:
+        # decide whether to play video or audio only for the session
         opts, extras = getopt.getopt(sys.argv[1:], "hdv:")
 
-        # decide whether to play video or audio only for the session
-        try:
-            # if options contain help flag...
-            if "-h" in opts[0]:
-                # show help and exit normally
-                error()
-            # if options contain download flag...
-            elif "-d" in opts[0]:
-                # process the name of media to search
-                req_search = opts[0][1] + " ".join(extras).rstrip()
-                # download the requested media
-                download(req_search)
-                # exit normally
-                sys.exit()
-            # if options contain video flag...
-            elif "-v" in opts[0]:
-                # process the name of media to search
-                req_search = opts[0][1] + " ".join(extras).rstrip()
-                # set flags to empty, to use defaults
-                flags = ""
-        # when no flags are given...
-        except IndexError:
-            # and no arguments are given...
-            if OP_MODE == "music":
-                # and default operation mode is set to music...
-                prompt_sym = "🎵"
-                flags = "--ytdl-format=bestaudio --no-video"
-            elif OP_MODE == "video":
-                # and default operation mode is set to video...
-                prompt_sym = "🎬"
-                flags = ""
-            else:
-                # if default operation mode is invalid, raise error
-                error(
-                    2,
-                    UnknownValue="variable OP_MODE has an unknown value."
-                            + "\nValid options are \"music\" and \"video\""
-                )
-            # when arguments are given, prepare to play media
-            req_search = sentinel_prompt(extras, prompt_sym)
+        # if options contain help flag...
+        if "-h" in opts[0]:
+            # show help and exit normally
+            error()
+        # if options contain download flag...
+        elif "-d" in opts[0]:
+            # process the name of media to search
+            req_search = opts[0][1] + " ".join(extras).rstrip()
+            # download the requested media
+            download(req_search)
+            # exit normally
+            sys.exit()
+        # if options contain video flag...
+        elif "-v" in opts[0]:
+            # process the name of media to search
+            req_search = opts[0][1] + " ".join(extras).rstrip()
+            # set flags to empty, to use defaults
+            flags = ""
     # if invalid flags are used...
     except getopt.GetoptError:
         error(2, UnknownArgs="Unknown options given.")
+    # when no flags are given...
+    except IndexError:
+        # and no arguments are given...
+        if OP_MODE == "music":
+            # and default operation mode is set to music...
+            prompt_sym = "🎵"
+            flags = "--ytdl-format=bestaudio --no-video"
+        elif OP_MODE == "video":
+            # and default operation mode is set to video...
+            prompt_sym = "🎬"
+            flags = ""
+        else:
+            # if default operation mode is invalid, raise error
+            error(
+                2,
+                UnknownValue="variable OP_MODE has an unknown value."
+                        + "\nValid options are \"music\" and \"video\""
+            )
+        # when arguments are given, prepare to play media
+        req_search = sentinel_prompt(extras, prompt_sym)
 
     # play the requested item and loop over input
     while req_search not in ["q", ""]:
