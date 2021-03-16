@@ -229,13 +229,13 @@ cpdef void main():
         req_search = sentinel_prompt(extras, prompt_sym)
 
     # play the requested item and loop over input
-    while req_search not in ["q", ""]:
+    while req_search not in {"q", ""}:
         # call the mpv media player with processed flags and URL
         play(flags, req_search)
         # when done, ask if user wants to repeat the last played media
         answer = input("Play again? (y/n): ")
         # process user request
-        if answer.lower() == "n":
+        if answer.lower() in {"n", ""}:
             # if user answers no,
             # ask what to play next, or quit
             req_search = input("Play next (q to quit): ")
