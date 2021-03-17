@@ -246,7 +246,7 @@ cpdef void main():
         else:
             # if invalid option is chosen
             # exit with code 2
-            sys.exit(2)
+            error(2, "Unrecognized option. Quitting...")
     # exit normally when everything is done
     sys.exit()
 

@@ -30,7 +30,7 @@ DOWNLOADER = "youtube-dl"
 # especially if you're using this script from Windows
 
 
-def error(err_code=0, msg="", **kwargs):
+def error(err_code=0, msg=".", **kwargs):
     """
     Show an error message and exit with requested error code
 
@@ -39,7 +39,7 @@ def error(err_code=0, msg="", **kwargs):
     @param **kwargs: extra messages
     """
     # if no error message given...
-    if len(msg) == 0:
+    if msg == ".":
         # set the error message to usage info
         msg = str(
             "Usage: ytplay [OPTIONS] <search query>\n"
@@ -219,13 +219,13 @@ def main():
         req_search = sentinel_prompt(extras, prompt_sym)
 
     # play the requested item and loop over input
-    while req_search not in ["q", ""]:
+    while req_search not in {"q", ""}:
         # call the mpv media player with processed flags and URL
         play(flags, req_search)
         # when done, ask if user wants to repeat the last played media
         answer = input("Play again? (y/n): ")
         # process user request
-        if answer.lower() == "n":
+        if answer.lower() in {"n", ""}:
             # if user answers no,
             # ask what to play next, or quit
             req_search = input("Play next (q to quit): ")
@@ -236,7 +236,7 @@ def main():
         else:
             # if invalid option is chosen
             # exit with code 2
-            sys.exit(2)
+            error(2, "Unrecognized option. Quitting...")
     # exit normally when everything is done
     sys.exit()
 
