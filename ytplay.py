@@ -243,5 +243,11 @@ def main():
 
 # when invoked as a program...
 if __name__ == "__main__":
-    # execute the main function and process flags and arguments accordingly
-    main()
+    # while the user doesn't quit by pressing ^C (Ctrl+C)...
+    try:
+        # execute the main function and process flags and arguments accordingly
+        main()
+    # if user presses ^C (Ctrl+C) to quit the program
+    except KeyboardInterrupt:
+        # show a message and quit
+        error(0, "Quitting...")

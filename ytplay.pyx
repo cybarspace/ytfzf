@@ -31,7 +31,7 @@ cdef:
 # especially if you're using this script from Windows
 
 
-def error(int err_code=0, str msg="", **kwargs):
+def error(int err_code=0, str msg=".", **kwargs):
     """
     Show an error message and exit with requested error code
 
@@ -41,7 +41,7 @@ def error(int err_code=0, str msg="", **kwargs):
     """
     cdef str err, err_msg
     # if no error message given...
-    if len(msg) == 0:
+    if msg == ".":
         # set the error message to usage info
         msg = str(
             f"Usage: ytplay [OPTIONS] <search query>\n"
@@ -253,5 +253,11 @@ cpdef void main():
 
 # when invoked as a program...
 if __name__ == "__main__":
-    # execute the main function and process flags and arguments accordingly
-    main()
+    # while the user doesn't quit by pressing ^C (Ctrl+C)...
+    try:
+        # execute the main function and process flags and arguments accordingly 
+        main()
+    # if user presses ^C (Ctrl+C) to quit the program
+    except KeyboardInterrupt:
+        # show a message and quit
+        error(0, "Quitting...")
