@@ -46,7 +46,8 @@ def error(err_code=0, msg=".", **kwargs):
             + "           OPTIONS:\n"
             + "             -h                    Show this help text\n"
             + "             -d  <search query>    Download video\n"
-            + "             -v  <search query>    Play video (script plays audio-only by default)"
+            + "             -v  <search query>    Play video \
+                    (script plays audio-only by default)"
         )
     # print the given or default error message
     print(msg)
@@ -146,7 +147,8 @@ def download(search_str):
     )  # ffmpeg may be needed to merge downloaded media
     # if everything is ok, download requested media
     os.system(
-        f"{DOWNLOADER} -o '{DLOAD_DIR}%(title)s.%(ext)s' {get_media_url(search_str)}"
+        f"{DOWNLOADER} -o '{DLOAD_DIR}%(title)s.%(ext)s' \
+                {get_media_url(search_str)}"
     )
 
 
@@ -218,36 +220,36 @@ def main():
         # when arguments are given, prepare to play media
         req_search = sentinel_prompt(extras, prompt_sym)
 
-    # play the requested item and loop over input
-    while req_search not in {"q", ""}:
-        # call the mpv media player with processed flags and URL
-        play(flags, req_search)
-        # when done, ask if user wants to repeat the last played media
-        answer = input("Play again? (y/n): ")
-        # process user request
-        if answer.lower() in {"n", ""}:
-            # if user answers no,
-            # ask what to play next, or quit
-            req_search = input("Play next (q to quit): ")
-        elif answer.lower() == "y":
-            # if user answers yes,
-            # keep playing
-            continue
-        else:
-            # if invalid option is chosen
-            # exit with code 2
-            error(2, "Unrecognized option. Quitting...")
-    # exit normally when everything is done
-    sys.exit()
-
-
-# when invoked as a program...
-if __name__ == "__main__":
     # while the user doesn't quit by pressing ^C (Ctrl+C)...
     try:
-        # execute the main function and process flags and arguments accordingly
-        main()
+        # play the requested item and loop over input
+        while req_search not in ("", "q"):
+            # call the mpv media player with processed flags and URL
+            play(flags, req_search)
+            # when done, ask if user wants to repeat the last played media
+            answer = input("Play again? (y/n): ")
+            # process user request
+            if answer.lower() in {"n", ""}:
+                # if user answers no,
+                # ask what to play next, or quit
+                req_search = input("Play next (q to quit): ")
+            elif answer.lower() == "y":
+                # if user answers yes,
+                # keep playing
+                continue
+            else:
+                # if invalid option is chosen
+                # exit with code 2
+                error(2, "Unrecognized option. Quitting...")
     # if user presses ^C (Ctrl+C) to quit the program
     except KeyboardInterrupt:
         # show a message and quit
         error(0, "\nQuitting...")
+    # exit normally when everything is done
+    error(0, "")
+
+
+# when invoked as a program...
+if __name__ == "__main__":
+    # execute the main function and process flags and arguments accordingly
+    main()
