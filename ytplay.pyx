@@ -248,16 +248,17 @@ cpdef void main():
             # exit with code 2
             error(2, "Unrecognized option. Quitting...")
     # exit normally when everything is done
-    sys.exit()
+    error(0, "")
 
 
 # when invoked as a program...
 if __name__ == "__main__":
     # while the user doesn't quit by pressing ^C (Ctrl+C)...
     try:
-        # execute the main function and process flags and arguments accordingly 
+        # execute the main function and process flags and arguments accordingly
         main()
     # if user presses ^C (Ctrl+C) to quit the program
     except KeyboardInterrupt:
         # show a message and quit
-        error(0, "Quitting...")
+        error(0, "\nQuitting...")
+

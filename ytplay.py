@@ -250,4 +250,4 @@ if __name__ == "__main__":
     # if user presses ^C (Ctrl+C) to quit the program
     except KeyboardInterrupt:
         # show a message and quit
-        error(0, "Quitting...")
+        error(0, "\nQuitting...")
