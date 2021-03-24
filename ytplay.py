@@ -230,16 +230,13 @@ def main():
             answer = input("Play again? (y/n): ")
             # process user request
             if answer.lower() in {"n", ""}:
-                # if user answers no,
-                # ask what to play next, or quit
+                # if user answers no, ask what to play next, or quit
                 req_search = input("Play next (q to quit): ")
             elif answer.lower() == "y":
-                # if user answers yes,
-                # keep playing
+                # if user answers yes, keep playing
                 continue
             else:
-                # if invalid option is chosen
-                # exit with code 2
+                # if invalid option is chosen, exit with code 2
                 error(2, "Unrecognized option. Quitting...")
     # if user presses ^C (Ctrl+C) to quit the program
     except KeyboardInterrupt:
