@@ -8,6 +8,7 @@ My Github: https://github.com/cybarspace
 """
 # required imports
 from shutil import which as installed  # to check dependencies
+from urllib import error as urlerr # no internet connection
 from urllib import request  # to get data from YouTube
 from urllib import parse  # to parse data obtained
 import getopt  # to parse command-line arguments
@@ -108,12 +109,18 @@ cpdef str get_media_url(str search_str="rickroll"):
     VIDEO_ID_RE = re.compile(r'"videoId":"(.{11})"')
     # format the given search string for use in URLs
     query_string = parse.urlencode({"search_query": search_str})
-    # get the YouTube search-result page for given search string
-    html_content = (
-        request.urlopen("https://www.youtube.com/results?" + query_string)
-        .read()
-        .decode()
-    )
+    # when connected to the internet...
+    try:
+        # get the YouTube search-result page for given search string
+        html_content = (
+            request.urlopen("https://www.youtube.com/results?" + query_string)
+            .read()
+            .decode()
+        )
+    # if not connected to the internet...
+    except urlerr.URLError:
+        # raise an error and quit
+        error(1, "No internet connection.")
     # find the first video ID from result page
     search_results = list(filter_dupes(VIDEO_ID_RE.findall(html_content)))
     # if no results are found...
