@@ -48,7 +48,8 @@ def error(err_code=0, msg=".", **kwargs):
             + "             -h                    Show this help text\n"
             + "             -d  <search query>    Download video\n"
             + "             -v  <search query>    Play video \
-                    (script plays audio-only by default)"
+                    (script plays audio-only by default)\n"
+            + "             -u  <search query>    Fetch the URL of the video"
         )
     # print the given or default error message
     print(msg)
@@ -184,12 +185,16 @@ def main():
     # parse flags and arguments
     try:
         # decide whether to play video or audio only for the session
-        opts, extras = getopt.getopt(sys.argv[1:], "hdv:")
+        opts, extras = getopt.getopt(sys.argv[1:], "hudv:")
 
         # if options contain help flag...
         if "-h" in opts[0]:
             # show help and exit normally
             error()
+        # if options contain URL flag...
+        if "-u" in opts[0]:
+            # show the URL and quit
+            error(0, get_media_url(opts[0][1] + " ".join(extras).rstrip()))
         # if options contain download flag...
         elif "-d" in opts[0]:
             # process the name of media to search
