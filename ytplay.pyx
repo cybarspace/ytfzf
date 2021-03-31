@@ -50,7 +50,7 @@ def error(int err_code=0, str msg=".", **kwargs):
             + "             -h                    Show this help text\n"
             + "             -d  <search query>    Download video to {DLOAD_DIR}\n"
             + "             -v  <search query>    Play video (script plays audio-only by default)\n"
-            + "             -u  <search query>    Fetch the video URL"
+            + "             -u  <search query>    Fetch video URL"
         )
     # print the given or default error message
     print(msg)
