@@ -35,6 +35,7 @@ Usage: ytplay [OPTIONS] <search query>
              -h                    Show this help text
              -d  <search query>    Download video
              -v  <search query>    Play video (audio-only if not specified)
+             -u  <search query>    Fetch video URL
 ```
 
 #### Examples
