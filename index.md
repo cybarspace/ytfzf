@@ -32,6 +32,7 @@ Usage: ytplay [OPTIONS] <search query>
              -h                    Show this help text
              -d  <search query>    Download video
              -v  <search query>    Play video
+             -u  <search query>    Fetch the video URL
 ```
 
 <div id="examples"></div>
