@@ -11,6 +11,7 @@ from shutil import which as installed  # to check dependencies
 from urllib import error as urlerr # no internet connection
 from urllib import request  # to get data from YouTube
 from urllib import parse  # to parse data obtained
+import readline  # for a more user-friendly prompt
 import getopt  # to parse command-line arguments
 import sys  # to exit with error codes
 import os  # to execute media player
